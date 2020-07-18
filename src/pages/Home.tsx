@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
 
-import Hero from '../organisms/Hero'
-import Introduction from '../organisms/Introduction'
-import Works from '../organisms/Works'
+import HabitCard from '../molecules/HabitCard'
+// import Hero from '../organisms/Hero'
+// import Introduction from '../organisms/Introduction'
+// import Works from '../organisms/Works'
 
 import { incrementIfOdd, increment, decrement } from '../redux/actions/counter'
 
@@ -13,8 +14,8 @@ const S: Styles.Component = Styles
 S.HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
 
   min-height: 100vh;
   width: 100vw;
@@ -36,9 +37,22 @@ class Home extends Component<PropTypes> {
     // const { } = this.props
     return (
       <S.HomeContainer>
-        <Hero />
+        <HabitCard
+          icon={'😀'}
+          title={'Hello'}
+          description={'Blah di blah di blah'}
+          color={{ r: 180, g: 28, b: 28 }}
+          xp={1}
+          dp={5}
+          coolDownAmt={2}
+          streakAmt={1}
+          complete={true}
+          onEdit={() => console.log('Edit')}
+          onToggleCheck={() => console.log('Toggle check')}
+        />
+        {/* <Hero />
         <Introduction />
-        <Works />
+        <Works /> */}
       </S.HomeContainer>
     )
   }
