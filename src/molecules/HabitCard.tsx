@@ -83,7 +83,7 @@ const HabitCard: FC<HabitCardProps> = ({
   coolDownUnit = 'day',
   coolDownAmt = 1,
   xp = 0,
-  dp = 0,
+  rp = 0,
   ...props
 }) => {
   return (
@@ -132,7 +132,7 @@ const HabitCard: FC<HabitCardProps> = ({
             {coolDownAmt + coolDownUnit[0]}
           </h4>
           <h4>
-            {dp}
+            {rp}
             <span role="img" aria-label="cal icon">
               💎
             </span>
@@ -145,7 +145,7 @@ const HabitCard: FC<HabitCardProps> = ({
 
 interface HabitCardProps {
   xp?: number
-  dp?: number
+  rp?: number
   streakUnit?: 'year' | 'month' | 'week' | 'day'
   streakAmt?: number
   coolDownUnit?: 'year' | 'month' | 'week' | 'day'

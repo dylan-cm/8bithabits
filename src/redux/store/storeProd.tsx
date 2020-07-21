@@ -1,10 +1,11 @@
-import { createStore, applyMiddleware } from "redux";
-import ReduxThunk from "redux-thunk";
-import rootReducer from "../reducers";
+import { createStore, applyMiddleware } from 'redux'
+import ReduxThunk from 'redux-thunk'
+import rootReducer from '../reducers'
+import { getFirebase } from 'react-redux-firebase'
 
-const middlewares = [ReduxThunk];
-const enhancer = [applyMiddleware(...middlewares)];
+const middlewares = [ReduxThunk.withExtraArgument(getFirebase)]
+// const enhancer = [applyMiddleware(...middlewares), reduxFirestore(config), reactReduxFirebase]
 
-export default function configureStore(initialState = {}) {
-  return createStore(rootReducer, initialState, ...enhancer);
+export default function configureStore() {
+  return createStore(rootReducer, applyMiddleware(...middlewares))
 }

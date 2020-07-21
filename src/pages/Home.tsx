@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
+import { firestoreConnect } from 'react-redux-firebase'
 
 import HabitCard from '../molecules/HabitCard'
-// import Hero from '../organisms/Hero'
-// import Introduction from '../organisms/Introduction'
-// import Works from '../organisms/Works'
 
-import { incrementIfOdd, increment, decrement } from '../redux/actions/counter'
+import { addHabit, getHabits } from '../redux/actions/firebaseActions.js'
 
 const S: Styles.Component = Styles
 S.HomeContainer = styled.div`
@@ -26,53 +25,65 @@ S.HomeContainer = styled.div`
 `
 
 interface PropTypes {
-  counter: number
-  incrementIfOdd: () => void
-  increment: () => void
-  decrement: () => void
+  habits: [any]
+  addHabit: (habit: { [key: string]: any }) => void
+  getHabits: () => void
 }
 
 class Home extends Component<PropTypes> {
+  componentDidMount() {
+    this.props.getHabits()
+  }
   render() {
-    // const { } = this.props
+    const { habits } = this.props
+
     return (
       <S.HomeContainer>
-        <HabitCard
-          icon={'😀'}
-          title={'Hello'}
-          description={'Blah di blah di blah'}
-          color={{ r: 180, g: 28, b: 28 }}
-          xp={1}
-          dp={5}
-          coolDownAmt={2}
-          streakAmt={1}
-          complete={true}
-          onEdit={() => console.log('Edit')}
-          onToggleCheck={() => console.log('Toggle check')}
-        />
-        {/* <Hero />
-        <Introduction />
-        <Works /> */}
+        {habits.length < 1 ? (
+          <div>Loading Habits...</div>
+        ) : (
+          habits.map((habit: any) => {
+            return (
+              <HabitCard
+                key={habit.title}
+                icon={habit.icon}
+                title={habit.title}
+                description={habit.description}
+                color={{ r: habit.color.r, g: habit.color.g, b: habit.color.b }}
+                xp={habit.xp}
+                rp={habit.rp}
+                coolDownAmt={habit.coolDownAmt}
+                streakAmt={habit.streakAmt}
+                complete={false}
+                onEdit={() => console.log('Edit')}
+                onToggleCheck={() => console.log('Toggle check')}
+              />
+            )
+          })
+        )}
       </S.HomeContainer>
     )
   }
 }
 
 interface StateType {
-  counter: number
   [key: string]: any
+  firebase: any
 }
 
 const mapStateToProps = (state: StateType) => {
   return {
-    counter: state.counter,
+    habits: state.firebase.habits,
   }
 }
 
 const mapDispatchToProps = {
-  incrementIfOdd,
-  increment,
-  decrement,
+  addHabit,
+  getHabits,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+const thing: any = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([{ collection: 'habits' }]),
+)(Home)
+export default thing
