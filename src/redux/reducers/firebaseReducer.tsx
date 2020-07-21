@@ -35,9 +35,11 @@ interface Action {
 
 export default function firebase(state = initialState, action: Action) {
   switch (action.type) {
+    case ActionTypes.BULK_ADD_HABITS:
+      return state
     case ActionTypes.ADD_HABIT:
       console.log('added habit:', action.payload)
-      return { ...state }
+      return state
     case ActionTypes.ADD_HABIT_ERR:
       console.log(action.err)
       return state

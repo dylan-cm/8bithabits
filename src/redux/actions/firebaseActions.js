@@ -33,3 +33,25 @@ export function getHabits() {
       })
   }
 }
+
+export function bulkAddHabits(habits) {
+  return (dispatch, getState, getFirebase) => {
+    // make async call to db
+    const db = getFirebase().firestore()
+    habits.forEach((habit) => {
+      db.collection('habits')
+        .add({
+          ...habit,
+          lastEdit: new Date(), //TODO: make this firebase db timestamp
+          createdAt: new Date(),
+        })
+        .then((data) => {
+          dispatch({ type: ActionTypes.BULK_ADD_HABITS, payload: habits })
+          getHabits()
+        })
+        .catch((err) => {
+          dispatch({ type: ActionTypes.ADD_HABIT_ERR, err })
+        })
+    })
+  }
+}

@@ -19,6 +19,7 @@ S.HabitCard = styled.div<any>`
 
   h1,
   h2,
+  h3,
   h4,
   p {
     margin: 0;
@@ -32,6 +33,12 @@ S.HabitCard = styled.div<any>`
   h2 {
     font-weight: 600;
     font-size: 3rem;
+    text-shadow: 0px 0px 30px rgba(${({ r, g, b }) => (r | 0) + ',' + (g | 0) + ',' + (b | 0)}, 1);
+    color: rgba(${({ r, g, b }) => (r | 0) + ',' + (g | 0) + ',' + (b | 0)}, 1);
+  }
+  h3 {
+    font-weight: 600;
+    font-size: 2rem;
     text-shadow: 0px 0px 30px rgba(${({ r, g, b }) => (r | 0) + ',' + (g | 0) + ',' + (b | 0)}, 1);
     color: rgba(${({ r, g, b }) => (r | 0) + ',' + (g | 0) + ',' + (b | 0)}, 1);
   }
@@ -107,7 +114,7 @@ const HabitCard: FC<HabitCardProps> = ({
           </span>
         </h1>
       </div>
-      <h2>{props.title}</h2>
+      {props.title.length < 7 ? <h2>{props.title}</h2> : <h3>{props.title}</h3>}
       <p className="description">{props.description}</p>
       <div className="rewards">
         <div className="row">

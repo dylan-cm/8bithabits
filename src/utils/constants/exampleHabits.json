@@ -1,0 +1,132 @@
+[
+  {
+    "xp": 1,
+    "rp": 5,
+    "streakUnit": "week",
+    "streakAmt": 5,
+    "coolDownUnit": "day",
+    "coolDownAmt": 1,
+    "description": "Maintain your weight within ±10lb range week over week. Apply weekly bonus. Daily cooldown.",
+    "title": "±10",
+    "color": {
+      "r": 180,
+      "g": 28,
+      "b": 28
+    },
+    "icon": "⚖️",
+    "createdBy": "",
+    "editedBy": [""],
+    "owner": "",
+    "routine": "",
+    "cue": "",
+    "next": "",
+    "version": {
+      "parent": "",
+      "children": [""]
+    }
+  },
+  {
+    "xp": 3,
+    "rp": 5,
+    "streakUnit": "week",
+    "streakAmt": 5,
+    "coolDownUnit": "day",
+    "coolDownAmt": 1,
+    "description": "Make love, it’s its own reward.Daily cool down.",
+    "title": "Sex",
+    "color": {
+      "r": 180,
+      "g": 28,
+      "b": 122
+    },
+    "icon": "💗",
+    "createdBy": "",
+    "editedBy": [""],
+    "owner": "",
+    "routine": "",
+    "cue": "",
+    "next": "",
+    "version": {
+      "parent": "",
+      "children": [""]
+    }
+  },
+  {
+    "xp": 1,
+    "rp": 5,
+    "streakUnit": "week",
+    "streakAmt": 1,
+    "coolDownUnit": "day",
+    "coolDownAmt": 1,
+    "description": "Balance your online check book. Ensure that you are within budget. Apply monthly bonus, weekly cool down.",
+    "title": "The Books",
+    "color": {
+      "r": 92,
+      "g": 180,
+      "b": 28
+    },
+    "icon": "💰",
+    "createdBy": "",
+    "editedBy": [""],
+    "owner": "",
+    "routine": "",
+    "cue": "",
+    "next": "",
+    "version": {
+      "parent": "",
+      "children": [""]
+    }
+  },
+  {
+    "xp": 1,
+    "rp": 5,
+    "streakUnit": "week",
+    "streakAmt": 1,
+    "coolDownUnit": "day",
+    "coolDownAmt": 1,
+    "description": "Write at least a page of creative writing. Write about anything, just write. Apply daily bonus, daily cool down.",
+    "title": "Write!",
+    "color": {
+      "r": 28,
+      "g": 116,
+      "b": 180
+    },
+    "icon": "📖",
+    "createdBy": "",
+    "editedBy": [""],
+    "owner": "",
+    "routine": "",
+    "cue": "",
+    "next": "",
+    "version": {
+      "parent": "",
+      "children": [""]
+    }
+  },
+  {
+    "xp": 1,
+    "rp": 5,
+    "streakUnit": "week",
+    "streakAmt": 3,
+    "coolDownUnit": "day",
+    "coolDownAmt": 2,
+    "description": "Get all those nooks and crannies. Make sure to weigh yourself too. Apply weekly bonus, daily cool down.",
+    "title": "Shower",
+    "color": {
+      "r": 180,
+      "g": 28,
+      "b": 28
+    },
+    "icon": "🧼",
+    "createdBy": "",
+    "editedBy": [""],
+    "owner": "",
+    "routine": "",
+    "cue": "",
+    "next": "",
+    "version": {
+      "parent": "",
+      "children": [""]
+    }
+  }
+]
