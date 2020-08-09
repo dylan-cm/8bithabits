@@ -9,7 +9,6 @@ function uuidv4() {
 export function addHabit() {
   return (dispatch, getState, getFirebase) => {
     const habit = getState().firebase.newHabit
-    // console.log('adding habit:', habit)
     // generate id
     const habitId = habit.title + '-' + uuidv4()
     // make async call to db
@@ -31,8 +30,8 @@ export function addHabit() {
         createdBy: '',
         editedBy: [''],
         owner: '',
-        routine: '',
-        cue: '',
+        sequence: '',
+        previous: '',
         next: '',
         version: {
           parent: '',
@@ -89,13 +88,12 @@ export function bulkAddHabits(habits) {
   }
 }
 
-export function updateNewHabit(color, icon, title, description, streak, xp, rp, cooldownAmt, cooldownUnit) {
-  return (dispatch) => {
+export function updateNewHabit(color, icon, title, cue, routine, reward, streak, xp, rp, cooldownAmt, cooldownUnit) {
+  return (dispatch) =>
     dispatch({
       type: ActionTypes.UPDATE_NEW_HABIT_PARAM,
-      payload: { color, icon, title, description, streak, xp, rp, cooldownAmt, cooldownUnit },
+      payload: { color, icon, title, cue, routine, reward, streak, xp, rp, cooldownAmt, cooldownUnit },
     })
-  }
 }
 
 export function deleteHabit(habitId) {

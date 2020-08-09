@@ -29,7 +29,9 @@ const initialState = {
     color: '#ff00ff',
     icon: '💡',
     title: 'Title',
-    description: 'Describe your routine',
+    cue: '',
+    routine: 'Describe your routine',
+    reward: '',
     streak: 'week',
     cooldownAmt: 0,
     cooldownUnit: 'day',
@@ -56,7 +58,6 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.GET_HABITS:
       var loadedHabits: any = []
       action.payload.forEach((doc: any) => loadedHabits.push(doc.data()))
-      console.log(loadedHabits)
       return { ...state, habits: loadedHabits }
     case ActionTypes.GET_HABITS_ERR:
       console.log(action.err)
@@ -68,8 +69,9 @@ export default function firebase(state = initialState, action: Action) {
           color: action.payload.color || state.newHabit.color,
           icon: action.payload.icon || state.newHabit.icon,
           title: action.payload.title || state.newHabit.title,
-          description: action.payload.description || state.newHabit.description,
-          streak: action.payload.streak || state.newHabit.streak,
+          cue: action.payload.cue || state.newHabit.cue,
+          routine: action.payload.routine || state.newHabit.routine,
+          reward: action.payload.reward || state.newHabit.reward,
           cooldownAmt: (action.payload.cooldownAmt <= 0 ? 0 : action.payload.cooldownAmt) || state.newHabit.cooldownAmt,
           cooldownUnit: action.payload.cooldownUnit || state.newHabit.cooldownUnit,
           xp: (action.payload.xp <= 0 ? 0 : action.payload.xp) || state.newHabit.xp,

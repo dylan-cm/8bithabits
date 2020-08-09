@@ -58,7 +58,9 @@ interface PropTypes {
   color: string
   icon: string
   title: string
-  description: string
+  cue: string
+  routine: string
+  reward: string
   streak: 'year' | 'month' | 'week' | 'day'
   xp: number
   rp: number
@@ -68,7 +70,9 @@ interface PropTypes {
     color?: string,
     icon?: string,
     title?: string,
-    description?: string,
+    cue?: string,
+    routine?: string,
+    reward?: string,
     streak?: string,
     xp?: number,
     rp?: number,
@@ -76,6 +80,7 @@ interface PropTypes {
     cooldownUnit?: string,
   ) => void
   addHabit: () => void
+  // withRouter props
   match: any
   history: any
   location: any
@@ -87,7 +92,7 @@ class NewHabit extends Component<PropTypes> {
       color,
       icon,
       title,
-      description,
+      routine,
       streak,
       xp,
       rp,
@@ -95,6 +100,8 @@ class NewHabit extends Component<PropTypes> {
       addHabit,
       cooldownAmt,
       cooldownUnit,
+      cue,
+      reward,
     } = this.props
     const iconOptions = [
       '🍽',
@@ -126,7 +133,9 @@ class NewHabit extends Component<PropTypes> {
           color={{ r: 255, g: 0, b: 0 }}
           icon={icon}
           title={title}
-          description={description}
+          cue={cue}
+          routine={routine}
+          reward={reward}
           streakUnit={streak}
           streakAmt={0}
           coolDownAmt={cooldownAmt}
@@ -142,6 +151,8 @@ class NewHabit extends Component<PropTypes> {
               onChange={(_e) =>
                 updateNewHabit(
                   _e.target.value,
+                  undefined,
+                  undefined,
                   undefined,
                   undefined,
                   undefined,
@@ -176,6 +187,8 @@ class NewHabit extends Component<PropTypes> {
                   undefined,
                   undefined,
                   undefined,
+                  undefined,
+                  undefined,
                 )
               }
             >
@@ -201,16 +214,60 @@ class NewHabit extends Component<PropTypes> {
                 undefined,
                 undefined,
                 undefined,
+                undefined,
+                undefined,
+              )
+            }
+          />
+          <input
+            type="text"
+            placeholder="Cue"
+            value={cue}
+            onChange={(_e) =>
+              updateNewHabit(
+                undefined,
+                undefined,
+                undefined,
+                _e.target.value,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
               )
             }
           />
           <textarea
             cols={40}
             rows={4}
-            placeholder="Description"
-            value={description}
+            placeholder="Routine"
+            value={routine}
             onChange={(_e) =>
               updateNewHabit(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                _e.target.value,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+              )
+            }
+          />
+          <input
+            type="text"
+            placeholder="Reward"
+            value={reward}
+            onChange={(_e) =>
+              updateNewHabit(
+                undefined,
+                undefined,
                 undefined,
                 undefined,
                 undefined,
@@ -230,6 +287,8 @@ class NewHabit extends Component<PropTypes> {
               value={streak}
               onChange={(_e) =>
                 updateNewHabit(
+                  undefined,
+                  undefined,
                   undefined,
                   undefined,
                   undefined,
@@ -260,6 +319,8 @@ class NewHabit extends Component<PropTypes> {
                   undefined,
                   undefined,
                   undefined,
+                  undefined,
+                  undefined,
                   Number(_e.target.value),
                   undefined,
                   undefined,
@@ -283,6 +344,8 @@ class NewHabit extends Component<PropTypes> {
                   undefined,
                   undefined,
                   undefined,
+                  undefined,
+                  undefined,
                   Number(_e.target.value),
                   undefined,
                 )
@@ -292,6 +355,8 @@ class NewHabit extends Component<PropTypes> {
               value={cooldownUnit}
               onChange={(_e) =>
                 updateNewHabit(
+                  undefined,
+                  undefined,
                   undefined,
                   undefined,
                   undefined,
@@ -317,6 +382,8 @@ class NewHabit extends Component<PropTypes> {
               value={rp}
               onChange={(_e) =>
                 updateNewHabit(
+                  undefined,
+                  undefined,
                   undefined,
                   undefined,
                   undefined,
@@ -353,7 +420,9 @@ const mapStateToProps = (state: StateType) => {
     color: state.firebase.newHabit.color,
     icon: state.firebase.newHabit.icon,
     title: state.firebase.newHabit.title,
-    description: state.firebase.newHabit.description,
+    cue: state.firebase.newHabit.cue,
+    routine: state.firebase.newHabit.routine,
+    reward: state.firebase.newHabit.reward,
     streak: state.firebase.newHabit.streak,
     cooldownAmt: state.firebase.newHabit.cooldownAmt,
     cooldownUnit: state.firebase.newHabit.cooldownUnit,

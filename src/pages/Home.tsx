@@ -49,7 +49,9 @@ class Home extends Component<PropTypes> {
                 key={habit.id}
                 icon={habit.icon}
                 title={habit.title}
-                description={habit.description}
+                cue={habit.cue}
+                routine={habit.routine}
+                reward={habit.reward}
                 color={{ r: habit.color.r, g: habit.color.g, b: habit.color.b }}
                 xp={habit.xp}
                 rp={habit.rp}

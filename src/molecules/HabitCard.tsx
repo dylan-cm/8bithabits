@@ -10,7 +10,7 @@ S.HabitCard = styled.div<any>`
   align-items: center;
 
   width: 200px;
-  height: 300px;
+  height: 360px;
   padding: 8px 4px;
   box-sizing: border-box;
 
@@ -53,7 +53,7 @@ S.HabitCard = styled.div<any>`
     max-lines: 4;
   }
   p.description {
-    height: 56px;
+    height: 80px;
   }
   div.burst {
     background: rgba(${({ r, g, b }) => (r | 0) + ',' + (g | 0) + ',' + (b | 0)}, 0.1);
@@ -127,7 +127,11 @@ const HabitCard: FC<HabitCardProps> = ({
         </h1>
       </div>
       {props.title.length < 7 ? <h2>{props.title}</h2> : <h3>{props.title}</h3>}
-      <p className="description">{props.description}</p>
+      <p className="description">
+        {props.cue ? 'Cue: ' + props.cue : ''} <br />
+        {props.routine} <br />
+        {props.reward ? 'Reward: ' + props.reward : ''}
+      </p>
       <div className="rewards">
         <div className="row">
           <h4>
@@ -169,7 +173,9 @@ interface HabitCardProps {
   streakAmt?: number
   coolDownUnit?: 'year' | 'month' | 'week' | 'day'
   coolDownAmt?: number
-  description?: string
+  cue?: string
+  routine?: string
+  reward?: string
   title: string
   color: {
     r: number
