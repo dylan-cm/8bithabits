@@ -91,21 +91,28 @@ const HabitCard: FC<HabitCardProps> = ({
   coolDownAmt = 1,
   xp = 0,
   rp = 0,
+  plain = false,
   ...props
 }) => {
   return (
     <S.HabitCard r={props.color.r} g={props.color.g} b={props.color.b}>
       <div className="row">
-        <div onClick={props.onEdit} className="btn">
-          <span role="img" aria-label="edit icon">
-            ✏️
-          </span>
-        </div>
-        <div onClick={props.onToggleCheck} className="btn">
-          <span role="img" aria-label="complete icon">
-            {props.complete ? '✅' : '🟩'}
-          </span>
-        </div>
+        {plain ? (
+          <></>
+        ) : (
+          <>
+            <div onClick={props.onEdit} className="btn">
+              <span role="img" aria-label="edit icon">
+                ✏️
+              </span>
+            </div>
+            <div onClick={props.onToggleCheck} className="btn">
+              <span role="img" aria-label="complete icon">
+                {props.complete ? '✅' : '🟩'}
+              </span>
+            </div>
+          </>
+        )}
       </div>
       <div className="burst">
         <h1>
@@ -164,10 +171,11 @@ interface HabitCardProps {
     g?: number
     b?: number
   }
-  icon: '😀' | '😝' //TODO: extend options for emoji slection by using type aliasing
+  icon: string //TODO: extend options for emoji slection by using type aliasing
   complete?: boolean
-  onEdit: () => void
-  onToggleCheck: () => void
+  onEdit?: () => void
+  onToggleCheck?: () => void
+  plain?: boolean
 }
 
 export default HabitCard

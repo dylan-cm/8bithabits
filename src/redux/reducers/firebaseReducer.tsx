@@ -25,6 +25,17 @@ import ActionTypes from '../../utils/constants/actionTypes'
 
 const initialState = {
   habits: [],
+  newHabit: {
+    color: '#ff00ff',
+    icon: '💡',
+    title: 'Title',
+    description: 'Describe your routine',
+    streak: 'week',
+    cooldownAmt: 0,
+    cooldownUnit: 'day',
+    xp: 0,
+    rp: 0,
+  },
 }
 
 interface Action {
@@ -50,6 +61,22 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.GET_HABITS_ERR:
       console.log(action.err)
       return state
+    case ActionTypes.UPDATE_NEW_HABIT_PARAM:
+      console.log(state.newHabit)
+      return {
+        ...state,
+        newHabit: {
+          color: action.payload.color || state.newHabit.color,
+          icon: action.payload.icon || state.newHabit.icon,
+          title: action.payload.title || state.newHabit.title,
+          description: action.payload.description || state.newHabit.description,
+          streak: action.payload.streak || state.newHabit.streak,
+          cooldownAmt: (action.payload.cooldownAmt <= 0 ? 0 : action.payload.cooldownAmt) || state.newHabit.cooldownAmt,
+          cooldownUnit: action.payload.cooldownUnit || state.newHabit.cooldownUnit,
+          xp: (action.payload.xp <= 0 ? 0 : action.payload.xp) || state.newHabit.xp,
+          rp: (action.payload.rp <= 0 ? 0 : action.payload.rp) || state.newHabit.rp,
+        },
+      }
     default:
       return state
   }

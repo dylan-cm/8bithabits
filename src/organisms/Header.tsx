@@ -51,7 +51,7 @@ function Header() {
         {/* Logo */}
         <Logo className="logo" onClick={() => history.push('/')} />
         {/* Contact */}
-        <OutlinedButton children="Say Hello" onClick={() => history.push('/contact')} />
+        <OutlinedButton children="New Habit" onClick={() => history.push('/new')} />
       </div>
     </S.Header>
   )

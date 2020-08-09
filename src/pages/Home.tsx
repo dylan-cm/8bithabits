@@ -33,7 +33,7 @@ interface PropTypes {
 class Home extends Component<PropTypes> {
   componentDidMount() {
     this.props.getHabits()
-    if (false) this.props.bulkAddHabits(exampleHabits) //! For testing purposes only
+    if (false) this.props.bulkAddHabits(exampleHabits) //! For testing purposes only, false means innactive
   }
   render() {
     const { habits } = this.props
@@ -43,10 +43,10 @@ class Home extends Component<PropTypes> {
         {habits.length < 1 ? (
           <div>Loading Habits...</div>
         ) : (
-          habits.map((habit: any) => {
+          habits.map((habit: any, index: number) => {
             return (
               <HabitCard
-                key={habit.title}
+                key={habit.title + index}
                 icon={habit.icon}
                 title={habit.title}
                 description={habit.description}
@@ -84,8 +84,7 @@ const mapDispatchToProps = {
   bulkAddHabits,
 }
 
-const thing: any = compose(
+export default compose<any>(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([{ collection: 'habits' }]),
 )(Home)
-export default thing

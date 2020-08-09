@@ -14,6 +14,7 @@ import Footer from '../organisms/Footer'
 
 const Home = lazy(() => import('../pages/Home'))
 const Contact = lazy(() => import('../pages/Contact'))
+const NewHabit = lazy(() => import('../pages/NewHabit'))
 
 export const history = createBrowserHistory()
 
@@ -33,6 +34,7 @@ function Routes() {
               <Header />
               <Switch>
                 <Route path="/contact" component={Contact} />
+                <Route path="/new" component={NewHabit} />
                 <Route path="/" component={Home} />
               </Switch>
               <Footer />
