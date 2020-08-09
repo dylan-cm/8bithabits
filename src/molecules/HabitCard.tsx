@@ -101,7 +101,12 @@ const HabitCard: FC<HabitCardProps> = ({
           <></>
         ) : (
           <>
-            <div onClick={props.onEdit} className="btn">
+            <div
+              onClick={(_) => {
+                if (props.onEdit) props.onEdit()
+              }}
+              className="btn"
+            >
               <span role="img" aria-label="edit icon">
                 ✏️
               </span>
@@ -158,8 +163,8 @@ const HabitCard: FC<HabitCardProps> = ({
 }
 
 interface HabitCardProps {
-  xp?: number
-  rp?: number
+  xp: number
+  rp: number
   streakUnit?: 'year' | 'month' | 'week' | 'day'
   streakAmt?: number
   coolDownUnit?: 'year' | 'month' | 'week' | 'day'
@@ -167,9 +172,9 @@ interface HabitCardProps {
   description?: string
   title: string
   color: {
-    r?: number
-    g?: number
-    b?: number
+    r: number
+    g: number
+    b: number
   }
   icon: string //TODO: extend options for emoji slection by using type aliasing
   complete?: boolean

@@ -7,6 +7,7 @@ import OutlinedButton from '../atoms/OutlinedButton'
 
 import { addHabit, updateNewHabit } from '../redux/actions/firebaseActions.js'
 import HabitCard from '../molecules/HabitCard'
+import { withRouter } from 'react-router'
 
 const S: Styles.Component = Styles
 S.NewHabitContainer = styled.div`
@@ -75,6 +76,9 @@ interface PropTypes {
     cooldownUnit?: string,
   ) => void
   addHabit: () => void
+  match: any
+  history: any
+  location: any
 }
 
 class NewHabit extends Component<PropTypes> {
@@ -326,7 +330,14 @@ class NewHabit extends Component<PropTypes> {
               }
             />
           </div>
-          <OutlinedButton onClick={addHabit}>Save New Habit</OutlinedButton>
+          <OutlinedButton
+            onClick={(_) => {
+              addHabit()
+              this.props.history.push('/')
+            }}
+          >
+            Save New Habit
+          </OutlinedButton>
         </div>
       </S.NewHabitContainer>
     )
@@ -356,4 +367,4 @@ const mapDispatchToProps = {
   updateNewHabit,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewHabit)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewHabit))

@@ -7,7 +7,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 
 import HabitCard from '../molecules/HabitCard'
 
-import { addHabit, getHabits, bulkAddHabits } from '../redux/actions/firebaseActions.js'
+import { getHabits, bulkAddHabits, deleteHabit } from '../redux/actions/firebaseActions.js'
 import exampleHabits from '../utils/constants/exampleHabits.json'
 
 const S: Styles.Component = Styles
@@ -25,9 +25,9 @@ S.HomeContainer = styled.div`
 
 interface PropTypes {
   habits: [any]
-  addHabit: (habit: { [key: string]: any }) => void
   getHabits: () => void
   bulkAddHabits: (habits: any) => void
+  deleteHabit: (habitId: string) => void
 }
 
 class Home extends Component<PropTypes> {
@@ -43,10 +43,10 @@ class Home extends Component<PropTypes> {
         {habits.length < 1 ? (
           <div>Loading Habits...</div>
         ) : (
-          habits.map((habit: any, index: number) => {
+          habits.map((habit: any) => {
             return (
               <HabitCard
-                key={habit.title + index}
+                key={habit.id}
                 icon={habit.icon}
                 title={habit.title}
                 description={habit.description}
@@ -56,7 +56,7 @@ class Home extends Component<PropTypes> {
                 coolDownAmt={habit.coolDownAmt}
                 streakAmt={habit.streakAmt}
                 complete={false}
-                onEdit={() => console.log('Edit')}
+                onEdit={() => this.props.deleteHabit(habit.id)}
                 onToggleCheck={() => console.log('Toggle check')}
               />
             )
@@ -79,9 +79,9 @@ const mapStateToProps = (state: StateType) => {
 }
 
 const mapDispatchToProps = {
-  addHabit,
   getHabits,
   bulkAddHabits,
+  deleteHabit,
 }
 
 export default compose<any>(

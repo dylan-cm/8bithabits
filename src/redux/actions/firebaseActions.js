@@ -1,14 +1,24 @@
 import ActionTypes from '../../utils/constants/actionTypes'
 
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16),
+  )
+}
+
 export function addHabit() {
   return (dispatch, getState, getFirebase) => {
     const habit = getState().firebase.newHabit
-    console.log('adding habit:', habit)
+    // console.log('adding habit:', habit)
+    // generate id
+    const habitId = habit.title + '-' + uuidv4()
     // make async call to db
     const db = getFirebase().firestore()
     db.collection('habits')
-      .add({
+      .doc(habitId)
+      .set({
         ...habit,
+        id: habitId,
         color: {
           //TODO: fix color in NewHabit
           r: 255,
@@ -31,6 +41,7 @@ export function addHabit() {
       })
       .then((data) => {
         dispatch({ type: ActionTypes.ADD_HABIT, payload: habit })
+        dispatch(getHabits())
       })
       .catch((err) => {
         dispatch({ type: ActionTypes.ADD_HABIT_ERR, err })
@@ -45,7 +56,7 @@ export function getHabits() {
     db.collection('habits')
       .get()
       .then((habits) => {
-        // data.forEach((doc) => console.log(doc.id, doc.data()))
+        // habits.forEach((doc) => console.log(doc.id, doc.data()))
         dispatch({ type: ActionTypes.GET_HABITS, payload: habits })
       })
       .catch((err) => {
@@ -59,19 +70,21 @@ export function bulkAddHabits(habits) {
     // make async call to db
     const db = getFirebase().firestore()
     habits.forEach((habit) => {
+      // generate id
+      const habitId = habit.title + '-' + uuidv4()
       db.collection('habits')
-        .add({
+        .doc(habitId)
+        .set({
           ...habit,
+          id: habitId,
           lastEdit: new Date(), //TODO: make this firebase db timestamp
           createdAt: new Date(),
         })
-        .then((data) => {
-          dispatch({ type: ActionTypes.BULK_ADD_HABITS, payload: habits })
-          getHabits()
+        .then((_data) => {
+          dispatch({ type: ActionTypes.BULK_ADD_HABITS })
+          dispatch(getHabits())
         })
-        .catch((err) => {
-          dispatch({ type: ActionTypes.ADD_HABIT_ERR, err })
-        })
+        .catch((err) => dispatch({ type: ActionTypes.ADD_HABIT_ERR, err }))
     })
   }
 }
@@ -82,5 +95,19 @@ export function updateNewHabit(color, icon, title, description, streak, xp, rp, 
       type: ActionTypes.UPDATE_NEW_HABIT_PARAM,
       payload: { color, icon, title, description, streak, xp, rp, cooldownAmt, cooldownUnit },
     })
+  }
+}
+
+export function deleteHabit(habitId) {
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore() // initialize db
+    db.collection('habits') // select habits collection
+      .doc(habitId) //select habit
+      .delete() // async call to delete habit
+      .then((_data) => {
+        dispatch({ type: ActionTypes.DELETE_HABIT })
+        dispatch(getHabits())
+      }) // then dispatch the action and reload from db
+      .catch((err) => dispatch({ type: ActionTypes.DELETE_HABIT_ERR, err: err })) // or catch the error
   }
 }

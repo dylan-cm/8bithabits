@@ -49,7 +49,6 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.BULK_ADD_HABITS:
       return state
     case ActionTypes.ADD_HABIT:
-      console.log('added habit:', action.payload)
       return state
     case ActionTypes.ADD_HABIT_ERR:
       console.log(action.err)
@@ -57,12 +56,12 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.GET_HABITS:
       var loadedHabits: any = []
       action.payload.forEach((doc: any) => loadedHabits.push(doc.data()))
+      console.log(loadedHabits)
       return { ...state, habits: loadedHabits }
     case ActionTypes.GET_HABITS_ERR:
       console.log(action.err)
       return state
     case ActionTypes.UPDATE_NEW_HABIT_PARAM:
-      console.log(state.newHabit)
       return {
         ...state,
         newHabit: {
@@ -77,6 +76,11 @@ export default function firebase(state = initialState, action: Action) {
           rp: (action.payload.rp <= 0 ? 0 : action.payload.rp) || state.newHabit.rp,
         },
       }
+    case ActionTypes.DELETE_HABIT:
+      return state
+    case ActionTypes.DELETE_HABIT_ERR:
+      console.log(action.err)
+      return state
     default:
       return state
   }
