@@ -2,12 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
-import { addHabit, onNewHabitChange, resetHabitEditor } from '../redux/actions/firebaseActions.js'
+import {
+  updateHabit,
+  onNewHabitChange,
+  loadHabitEditor,
+  deleteHabit,
+  resetHabitEditor,
+} from '../redux/actions/firebaseActions.js'
 import HabitEditor from '../organisms/HabitEditor'
+import { withRouter } from 'react-router'
 import OutlinedButton from '../atoms/OutlinedButton'
 
 const S: Styles.Component = Styles
-S.NewHabitContainer = styled.div`
+S.UpdateHabitContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -46,15 +53,22 @@ interface PropTypes {
     coolDownAmt?: number,
     coolDownUnit?: string,
   ) => void
-  addHabit: () => void
+  updateHabit: (habitId: string) => void
+  loadHabitEditor: (habitId: string) => void
   resetHabitEditor: () => void
-  // withRouter props
+  deleteHabit: (habitId: string) => void
+  // react router
   match: any
-  history: any
   location: any
+  history: any
 }
 
-class NewHabit extends Component<PropTypes> {
+class UpdateHabit extends Component<PropTypes> {
+  componentDidMount() {
+    // load habit to state
+    let id = this.props.match.params.id
+    this.props.loadHabitEditor(id)
+  }
   render() {
     const iconOptions = [
       '🍽',
@@ -80,7 +94,7 @@ class NewHabit extends Component<PropTypes> {
       '💸',
     ]
     return (
-      <S.NewHabitContainer>
+      <S.UpdateHabitContainer>
         <HabitEditor
           color={this.props.color}
           icon={this.props.icon}
@@ -98,11 +112,11 @@ class NewHabit extends Component<PropTypes> {
         />
         <OutlinedButton
           onClick={(_) => {
-            this.props.addHabit()
+            this.props.updateHabit(this.props.match.params.id)
             this.props.history.push('/')
           }}
         >
-          Save New Habit
+          Save Habit
         </OutlinedButton>
         <OutlinedButton
           onClick={(_) => {
@@ -112,7 +126,15 @@ class NewHabit extends Component<PropTypes> {
         >
           Cancel
         </OutlinedButton>
-      </S.NewHabitContainer>
+        <OutlinedButton
+          onClick={(_) => {
+            this.props.deleteHabit(this.props.match.params.id)
+            this.props.history.push('/')
+          }}
+        >
+          Delete Habit *dangerous
+        </OutlinedButton>
+      </S.UpdateHabitContainer>
     )
   }
 }
@@ -138,9 +160,11 @@ const mapStateToProps = (state: StateType) => {
 }
 
 const mapDispatchToProps = {
-  addHabit,
+  updateHabit,
   onNewHabitChange,
+  loadHabitEditor,
   resetHabitEditor,
+  deleteHabit,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewHabit)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(UpdateHabit))

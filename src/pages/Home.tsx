@@ -9,6 +9,7 @@ import HabitCard from '../molecules/HabitCard'
 
 import { getHabits, bulkAddHabits, deleteHabit } from '../redux/actions/firebaseActions.js'
 import exampleHabits from '../utils/constants/exampleHabits.json'
+import { withRouter } from 'react-router-dom'
 
 const S: Styles.Component = Styles
 S.HomeContainer = styled.div`
@@ -28,6 +29,10 @@ interface PropTypes {
   getHabits: () => void
   bulkAddHabits: (habits: any) => void
   deleteHabit: (habitId: string) => void
+  // React Router
+  history: any
+  match: any
+  location: any
 }
 
 class Home extends Component<PropTypes> {
@@ -58,7 +63,7 @@ class Home extends Component<PropTypes> {
                 coolDownAmt={habit.coolDownAmt}
                 streakAmt={habit.streakAmt}
                 complete={false}
-                onEdit={() => this.props.deleteHabit(habit.id)}
+                onEdit={() => this.props.history.push('/edit/' + habit.id)}
                 onToggleCheck={() => console.log('Toggle check')}
               />
             )
@@ -89,4 +94,4 @@ const mapDispatchToProps = {
 export default compose<any>(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([{ collection: 'habits' }]),
-)(Home)
+)(withRouter(Home))

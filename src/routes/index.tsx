@@ -11,6 +11,7 @@ import Loading from '../pages/Loading'
 import LoginPage from '../pages/LoginPage'
 import Header from '../organisms/Header'
 import Footer from '../organisms/Footer'
+import UpdateHabit from '../pages/UpdateHabit'
 
 const Home = lazy(() => import('../pages/Home'))
 const Contact = lazy(() => import('../pages/Contact'))
@@ -35,6 +36,7 @@ function Routes() {
               <Switch>
                 <Route path="/contact" component={Contact} />
                 <Route path="/new" component={NewHabit} />
+                <Route path="/edit/:id" component={UpdateHabit} />
                 <Route path="/" component={Home} />
               </Switch>
               <Footer />

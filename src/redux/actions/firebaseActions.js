@@ -26,7 +26,7 @@ export function addHabit() {
         },
         streakAmt: 0,
         lastEdit: new Date(), //TODO: make this firebase db timestamp
-        createdAt: new Date(),
+        createdAt: new Date(), //TODO: make this firebase db timestamp
         createdBy: '',
         editedBy: [''],
         owner: '',
@@ -77,7 +77,7 @@ export function bulkAddHabits(habits) {
           ...habit,
           id: habitId,
           lastEdit: new Date(), //TODO: make this firebase db timestamp
-          createdAt: new Date(),
+          createdAt: new Date(), //TODO: make this firebase db timestamp
         })
         .then((_data) => {
           dispatch({ type: ActionTypes.BULK_ADD_HABITS })
@@ -88,11 +88,11 @@ export function bulkAddHabits(habits) {
   }
 }
 
-export function updateNewHabit(color, icon, title, cue, routine, reward, streak, xp, rp, cooldownAmt, cooldownUnit) {
+export function onNewHabitChange(color, icon, title, cue, routine, reward, streak, xp, rp, coolDownAmt, coolDownUnit) {
   return (dispatch) =>
     dispatch({
-      type: ActionTypes.UPDATE_NEW_HABIT_PARAM,
-      payload: { color, icon, title, cue, routine, reward, streak, xp, rp, cooldownAmt, cooldownUnit },
+      type: ActionTypes.ON_NEW_HABIT_CHANGE,
+      payload: { color, icon, title, cue, routine, reward, streak, xp, rp, coolDownAmt, coolDownUnit },
     })
 }
 
@@ -107,5 +107,46 @@ export function deleteHabit(habitId) {
         dispatch(getHabits())
       }) // then dispatch the action and reload from db
       .catch((err) => dispatch({ type: ActionTypes.DELETE_HABIT_ERR, err: err })) // or catch the error
+  }
+}
+
+// Update Habit on Firestore
+export function updateHabit(habitId) {
+  return (dispatch, getState, getFirebase) => {
+    const habit = getState().firebase.newHabit
+    console.log(habit, habitId)
+    const db = getFirebase().firestore() // initialize db
+    db.collection('habits') // select habits collection
+      .doc(habitId) // select habit
+      .update({
+        ...habit,
+        lastEdit: new Date(), //TODO: make this firebase db timestamp
+      }) // update habit
+      .then((_) => {
+        dispatch({ type: ActionTypes.UPDATE_HABIT })
+        dispatch(getHabits())
+      }) // then dispatch the action and reload from db
+      .catch((err) => dispatch({ type: ActionTypes.UPDATE_HABIT_ERR, err: err })) // or catch the error
+  }
+}
+
+export function loadHabitEditor(habitId) {
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore()
+    db.collection('habits') // habits collection
+      .doc(habitId) // select habit document based on id
+      .get() // get data
+      .then((habit) => {
+        dispatch({ type: ActionTypes.LOAD_HABIT_EDITOR, payload: habit })
+      }) // then dispatch load action
+      .catch((err) => {
+        dispatch({ type: ActionTypes.GET_HABITS_ERR, err })
+      }) // or catch error
+  }
+}
+
+export function resetHabitEditor() {
+  return (dispatch, getState) => {
+    dispatch({ type: ActionTypes.RESET_HABIT_EDITOR })
   }
 }

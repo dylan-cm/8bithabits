@@ -33,8 +33,8 @@ const initialState = {
     routine: 'Describe your routine',
     reward: '',
     streak: 'week',
-    cooldownAmt: 0,
-    cooldownUnit: 'day',
+    coolDownAmt: 0,
+    coolDownUnit: 'day',
     xp: 0,
     rp: 0,
   },
@@ -51,7 +51,7 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.BULK_ADD_HABITS:
       return state
     case ActionTypes.ADD_HABIT:
-      return state
+      return { ...state, newHabit: initialState.newHabit }
     case ActionTypes.ADD_HABIT_ERR:
       console.log(action.err)
       return state
@@ -62,7 +62,7 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.GET_HABITS_ERR:
       console.log(action.err)
       return state
-    case ActionTypes.UPDATE_NEW_HABIT_PARAM:
+    case ActionTypes.ON_NEW_HABIT_CHANGE:
       return {
         ...state,
         newHabit: {
@@ -72,17 +72,29 @@ export default function firebase(state = initialState, action: Action) {
           cue: action.payload.cue || state.newHabit.cue,
           routine: action.payload.routine || state.newHabit.routine,
           reward: action.payload.reward || state.newHabit.reward,
-          cooldownAmt: (action.payload.cooldownAmt <= 0 ? 0 : action.payload.cooldownAmt) || state.newHabit.cooldownAmt,
-          cooldownUnit: action.payload.cooldownUnit || state.newHabit.cooldownUnit,
+          coolDownAmt: (action.payload.coolDownAmt <= 0 ? 0 : action.payload.coolDownAmt) || state.newHabit.coolDownAmt,
+          coolDownUnit: action.payload.coolDownUnit || state.newHabit.coolDownUnit,
           xp: (action.payload.xp <= 0 ? 0 : action.payload.xp) || state.newHabit.xp,
           rp: (action.payload.rp <= 0 ? 0 : action.payload.rp) || state.newHabit.rp,
         },
       }
     case ActionTypes.DELETE_HABIT:
-      return state
+      return { ...state, newHabit: initialState.newHabit }
     case ActionTypes.DELETE_HABIT_ERR:
       console.log(action.err)
       return state
+    case ActionTypes.UPDATE_HABIT:
+      return { ...state, newHabit: initialState.newHabit }
+    case ActionTypes.UPDATE_HABIT_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.LOAD_HABIT_EDITOR:
+      return {
+        ...state,
+        newHabit: { ...action.payload.data() },
+      }
+    case ActionTypes.RESET_HABIT_EDITOR:
+      return { ...state, newHabit: initialState.newHabit }
     default:
       return state
   }
