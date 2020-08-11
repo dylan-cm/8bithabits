@@ -38,6 +38,13 @@ const initialState = {
     xp: 0,
     rp: 0,
   },
+  sequences: [],
+  newSequence: {
+    title: 'Title',
+    habits: [],
+    coolDownAmt: 0,
+    coolDownUnit: 'day',
+  },
 }
 
 interface Action {
@@ -95,6 +102,42 @@ export default function firebase(state = initialState, action: Action) {
       }
     case ActionTypes.RESET_HABIT_EDITOR:
       return { ...state, newHabit: initialState.newHabit }
+    // Sequences
+    case ActionTypes.GET_SEQUENCES:
+      return { ...state, sequences: action.payload }
+    case ActionTypes.GET_SEQUENCES_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.UPDATE_SEQUENCE:
+      return { ...state, newSequence: initialState.newSequence }
+    case ActionTypes.UPDATE_SEQUENCE_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.DELETE_SEQUENCE:
+      return { ...state, newSequence: initialState.newSequence }
+    case ActionTypes.DELETE_SEQUENCE_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.ADD_SEQUENCE:
+      return { ...state, newSequence: initialState.newSequence }
+    case ActionTypes.ADD_SEQUENCE_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.BULK_ADD_SEQUENCES:
+      return state
+    case ActionTypes.BULK_ADD_SEQUENCES_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.ON_NEW_SEQUENCE_CHANGE:
+      return {
+        ...state,
+        newSequence: {
+          title: action.payload.title || state.newSequence.title,
+          coolDownAmt:
+            (action.payload.coolDownAmt <= 0 ? 0 : action.payload.coolDownAmt) || state.newSequence.coolDownAmt,
+          coolDownUnit: action.payload.coolDownUnit || state.newSequence.coolDownUnit,
+        },
+      }
     default:
       return state
   }

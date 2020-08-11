@@ -150,3 +150,105 @@ export function resetHabitEditor() {
     dispatch({ type: ActionTypes.RESET_HABIT_EDITOR })
   }
 }
+
+// SEQUENCES
+
+export function getSequences() {
+  return (dispatch, getState, getFirebase) => {
+    var loadedSequences = []
+    const db = getFirebase().firestore() // connect to firestore
+    db.collection('sequences') // sequences collection
+      .get() // get all documents
+      .then((sequences) => {
+        sequences.forEach((sequence) => {
+          // sequence.data().habits.forEach((habitId) => {
+          //   // async call to db, get habit based off id for each item in sequnce habits array
+          //   db.collection('habits') // select habits collection on firestore
+          //     .doc(habitId) // get the habit by id
+          //     .get()
+          //     .then((habit) => loadedHabits.push(habit.data())) // then add it to the habits array
+          //     .catch((err) => dispatch({ type: ActionTypes.GET_SEQUENCES_ERR, payload: err })) // or catch the error
+          // })
+          loadedSequences.push({ ...sequence.data() }) // add sequence and loaded habits to the loaded sequences
+        })
+        dispatch({ type: ActionTypes.GET_SEQUENCES, payload: loadedSequences }) // dispatch the loaded sequences
+      }) // then dispatch the sequences
+      .catch((err) => dispatch({ type: ActionTypes.GET_SEQUENCES_ERR, payload: err })) // or catch the error
+  }
+}
+
+export function updateSequence(sequenceId) {
+  return (dispatch, getState, getFirebase) => {
+    const sequence = getState().firebase.newSequence // get new sequence parameters from state
+    const db = getFirebase().firestore() // connect to firestore
+    db.collection('sequences') // sequences collection
+      .doc(sequenceId) // select document with id
+      .update({
+        ...sequence,
+        lastEdit: new Date(), //TODO: make this firebase db timestamp
+      }) // update document with new sequence parameters
+      .then((_) => {
+        dispatch({ type: ActionTypes.UPDATE_SEQUENCE })
+        dispatch(getSequences())
+      }) // then dispatch the action and reload the sequences
+      .catch((err) => dispatch({ type: ActionTypes.UPDATE_SEQUENCE_ERR, payload: err })) // or catch the error
+  }
+}
+
+export function addSequence() {
+  return (dispatch, getState, getFirebase) => {
+    const sequence = getState().firebase.newSequence // get new sequence parameters from state
+    const sequenceId = sequence.title + '-' + uuidv4() // generate sequnce id
+    const db = getFirebase().firestore() // connect to firestore
+    db.collection('sequences') // sequences collection
+      .doc(sequenceId) // select document with id
+      .set({
+        ...sequence,
+        id: sequenceId,
+        lastEdit: new Date(), //TODO: make this firebase db timestamp
+        createdAt: new Date(), //TODO: make this firebase db timestamp
+      }) // update document with new sequence parameters
+      .then((_) => {
+        dispatch({ type: ActionTypes.ADD_SEQUENCE })
+        dispatch(getSequences())
+      }) // then dispatch the action and reload the sequences
+      .catch((err) => dispatch({ type: ActionTypes.ADD_SEQUENCE_ERR, payload: err })) // or catch the error
+  }
+}
+
+export function bulkAddSequences(sequences) {
+  console.log(sequences)
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore() // connect to firestore
+    sequences.forEach((sequence) => {
+      const sequenceId = sequence.title + '-' + uuidv4() // generate sequnce id
+      db.collection('sequences') // sequences collection
+        .doc(sequenceId) // select document with id
+        .set({
+          ...sequence,
+          id: sequenceId,
+          lastEdit: new Date(), //TODO: make this firebase db timestamp
+          createdAt: new Date(), //TODO: make this firebase db timestamp
+        }) // update document with new sequence parameters
+        .then((_) => {
+          dispatch({ type: ActionTypes.BULK_ADD_SEQUENCES })
+          dispatch(getSequences())
+        }) // then dispatch the action and reload the sequences
+        .catch((err) => dispatch({ type: ActionTypes.BULK_ADD_SEQUENCES_ERR, payload: err })) // or catch the error
+    })
+  }
+}
+
+export function deleteSequence(sequenceId) {
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore() // connect to firestore
+    db.collection('sequences') // sequences collection
+      .doc(sequenceId) // select document with id
+      .delete() // update document with new sequence parameters
+      .then((_) => {
+        dispatch({ type: ActionTypes.DELETE_SEQUENCE })
+        dispatch(getSequences())
+      }) // then dispatch the action and reload the sequences
+      .catch((err) => dispatch({ type: ActionTypes.DELETE_SEQUENCE_ERR, payload: err })) // or catch the error
+  }
+}

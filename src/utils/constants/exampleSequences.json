@@ -1,0 +1,21 @@
+[
+  {
+    "id": "Mornings-40ca5648-1759-4e2b-9c88-006d6fb797ea",
+    "title": "Mornings",
+    "coolDownUnit": "day",
+    "coolDownAmt": 1,
+    "habits": [
+      "±10-0c3c7373-ee5b-4554-b227-ae673b844f48",
+      "Shower-c5582d88-391b-4723-b9b8-b2600a8109f1",
+      "Brush Teeth-d7ea2e95-b131-48b4-ab4d-117a2560c318"
+    ],
+    "createdBy": "",
+    "createdAt": "August 9, 2020 at 1:12:57 PM UTC-7",
+    "lastEdit": "August 9, 2020 at 1:12:57 PM UTC-7",
+    "owner": "",
+    "version": {
+      "parent": [""],
+      "children": [""]
+    }
+  }
+]
