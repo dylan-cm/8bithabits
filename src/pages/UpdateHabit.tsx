@@ -113,6 +113,7 @@ class UpdateHabit extends Component<PropTypes> {
         <OutlinedButton
           onClick={(_) => {
             this.props.updateHabit(this.props.match.params.id)
+            this.props.resetHabitEditor()
             this.props.history.push('/')
           }}
         >
@@ -129,6 +130,7 @@ class UpdateHabit extends Component<PropTypes> {
         <OutlinedButton
           onClick={(_) => {
             this.props.deleteHabit(this.props.match.params.id)
+            this.props.resetHabitEditor()
             this.props.history.push('/')
           }}
         >

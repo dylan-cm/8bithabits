@@ -252,3 +252,34 @@ export function deleteSequence(sequenceId) {
       .catch((err) => dispatch({ type: ActionTypes.DELETE_SEQUENCE_ERR, payload: err })) // or catch the error
   }
 }
+
+export function loadSequenceEditor(id) {
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore()
+    db.collection('sequences') // sequences collection
+      .doc(id) // select sequence document based on id
+      .get() // get data
+      .then((sequence) => {
+        dispatch({ type: ActionTypes.LOAD_SEQUENCE_EDITOR, payload: sequence })
+      }) // then dispatch load action
+      .catch((err) => {
+        dispatch({ type: ActionTypes.GET_SEQUENCES_ERR, err })
+      }) // or catch error
+  }
+}
+
+export function resetSequenceEditor() {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.RESET_SEQUENCE_EDITOR })
+  }
+}
+
+export function onNewSequenceChange(title, coolDownAmt, coolDownUnit, habitList) {
+  return (dispatch) => {
+    const habits = habitList
+    dispatch({
+      type: ActionTypes.ON_NEW_SEQUENCE_CHANGE,
+      payload: { title, coolDownAmt, coolDownUnit, habits },
+    })
+  }
+}

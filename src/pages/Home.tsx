@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
-import { firestoreConnect } from 'react-redux-firebase'
 
 import HabitCard from '../molecules/HabitCard'
 
@@ -72,7 +70,7 @@ class Home extends Component<PropTypes> {
               onHabitEdit={(habitId: string) => this.props.history.push('/edit/' + habitId)}
               title={sequence.title}
               habits={habits.filter((habit) => sequence.habits.includes(habit.id))}
-              onSequenceEdit={() => console.log('edit sequence ', sequence.id)}
+              onSequenceEdit={() => this.props.history.push('/editSequence/' + sequence.id)}
             />
           ))
         )}
@@ -123,7 +121,4 @@ const mapDispatchToProps = {
   bulkAddSequences,
 }
 
-export default compose<any>(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([{ collection: 'habits' }]),
-)(withRouter(Home))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home))

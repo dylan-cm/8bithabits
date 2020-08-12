@@ -11,11 +11,13 @@ import Loading from '../pages/Loading'
 import LoginPage from '../pages/LoginPage'
 import Header from '../organisms/Header'
 import Footer from '../organisms/Footer'
-import UpdateHabit from '../pages/UpdateHabit'
 
 const Home = lazy(() => import('../pages/Home'))
 const Contact = lazy(() => import('../pages/Contact'))
 const NewHabit = lazy(() => import('../pages/NewHabit'))
+const UpdateHabit = lazy(() => import('../pages/UpdateHabit'))
+const NewSequence = lazy(() => import('../pages/NewSequence'))
+const UpdateSequence = lazy(() => import('../pages/UpdateSequence'))
 
 export const history = createBrowserHistory()
 
@@ -37,6 +39,8 @@ function Routes() {
                 <Route path="/contact" component={Contact} />
                 <Route path="/new" component={NewHabit} />
                 <Route path="/edit/:id" component={UpdateHabit} />
+                <Route path="/editSequence/:id" component={UpdateSequence} />
+                <Route path="/new-sequence" component={NewSequence} />
                 <Route path="/" component={Home} />
               </Switch>
               <Footer />

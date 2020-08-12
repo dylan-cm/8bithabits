@@ -136,8 +136,15 @@ export default function firebase(state = initialState, action: Action) {
           coolDownAmt:
             (action.payload.coolDownAmt <= 0 ? 0 : action.payload.coolDownAmt) || state.newSequence.coolDownAmt,
           coolDownUnit: action.payload.coolDownUnit || state.newSequence.coolDownUnit,
+          habits: action.payload.habits || state.newSequence.habits,
         },
       }
+    case ActionTypes.LOAD_SEQUENCE_EDITOR:
+      const sequence = action.payload.data() // get data from firstore doc
+      const _loadedHabits = state.habits.filter((habit: any) => sequence.habits.includes(habit.id)) // load in habit data of habits in sequence
+      return { ...state, newSequence: { ...sequence, habits: _loadedHabits } } // return sequnce with loaded habits instead of habit ids
+    case ActionTypes.RESET_SEQUENCE_EDITOR:
+      return { ...state, newSequence: initialState.newSequence }
     default:
       return state
   }

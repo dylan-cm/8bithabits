@@ -50,7 +50,7 @@ function Header() {
       <div className="nav-wrapper">
         {/* Logo */}
         <Logo className="logo" onClick={() => history.push('/')} />
-        {/* Contact */}
+        <OutlinedButton children="New Sequence" onClick={() => history.push('/new-sequence')} />
         <OutlinedButton children="New Habit" onClick={() => history.push('/new')} />
       </div>
     </S.Header>

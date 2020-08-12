@@ -61,10 +61,11 @@ const Sequence: FC<SequenceProps> = (props) => {
       </div>
       {props.habits.map((habit, i) => {
         return (
-          <>
+          <React.Fragment key={habit.id + props.title + 'fragment'}>
             <div className="habitWrapper" key={habit.id + props.title + 'wrap'}>
               <HabitCard
-                key={habit.id + props.title}
+                plain={props.plain}
+                key={props.title + habit.id}
                 icon={habit.icon}
                 title={habit.title}
                 cue={habit.cue}
@@ -76,13 +77,13 @@ const Sequence: FC<SequenceProps> = (props) => {
                 coolDownAmt={habit.coolDownAmt}
                 streakAmt={habit.streakAmt}
                 complete={false}
-                onEdit={() => props.onHabitEdit(habit.id)}
+                onEdit={() => (props.onHabitEdit ? props.onHabitEdit(habit.id) : console.log(''))}
                 onToggleCheck={() => console.log('Toggle check')}
               />
             </div>
             {/* If it's the last habit, don't render a pointer to the next habit */}
-            <div className={i + 1 === props.habits.length ? '' : 'pointer'} />
-          </>
+            <div className={i + 1 === props.habits.length ? '' : 'pointer'} key={habit.id + props.title + 'pointer'} />
+          </React.Fragment>
         )
       })}
     </S.Sequence>
@@ -95,7 +96,7 @@ interface SequenceProps {
   title: string
   cooldownAmt?: number
   cooldownUnit?: string
-  onHabitEdit: (habitId: string) => void
+  onHabitEdit?: (habitId: string) => void
   onSequenceEdit?: () => void
 }
 
