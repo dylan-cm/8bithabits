@@ -1,5 +1,4 @@
-// import React, { StrictMode } from 'react'
-import React from 'react'
+import React, { StrictMode } from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import store from './redux/store'
@@ -21,9 +20,9 @@ const rrfProps = {
 render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
-      {/* <StrictMode> */}
-      <Routes />
-      {/* </StrictMode> */}
+      <StrictMode>
+        <Routes />
+      </StrictMode>
     </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById('root'),
