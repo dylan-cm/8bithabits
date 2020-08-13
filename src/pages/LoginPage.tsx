@@ -1,9 +1,31 @@
 import React, { Component } from 'react'
 import firebase from '../utils/firebase'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import { Link } from 'react-router-dom'
+import styled from '../styles/styled'
+import * as Styles from '../styles'
+import { withRouter } from 'react-router-dom'
+import { ReactComponent as Logo } from '../assets/logo.svg'
 
-interface PropTypes {}
+const S: Styles.Component = Styles
+S.LoginPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+
+  .logo {
+    width: 100px;
+  }
+`
+
+interface PropTypes {
+  // React Router
+  history: any
+  match: any
+  location: any
+}
 
 class LoginPage extends Component<PropTypes> {
   uiConfig = {
@@ -30,26 +52,41 @@ class LoginPage extends Component<PropTypes> {
     this.unregisterAuthObserver()
   }
 
+  async redirect(msDelay: number) {
+    await new Promise((resolve) => setTimeout(resolve, msDelay))
+    this.props.history.push('/')
+    console.log('redirected')
+  }
+
   render() {
+    this.state.isSignedIn && this.redirect(3000)
     return (
-      <div>
+      <S.LoginPageContainer>
+        <Logo className="logo" />
         {this.state.isSignedIn !== undefined && !this.state.isSignedIn && (
-          <div>
+          <>
+            <h1>Sign in or sign up</h1>
             <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()} />
-          </div>
+          </>
         )}
         {this.state.isSignedIn && (
-          <div>
-            Hello {firebase.auth().currentUser?.displayName}. You are now signed In!
-            <Link to="/">Continue</Link>
+          <>
+            <h1>Hello {firebase.auth().currentUser?.displayName}. You are now signed In!</h1>
+            <p>
+              {'You should be redirceted in 3 seconds... if not '}
+              <a href=" " onClick={() => this.props.history.push('/')}>
+                click here
+              </a>
+            </p>
+            <br />
             <a href=" " onClick={() => firebase.auth().signOut()}>
               Sign-out
             </a>
-          </div>
+          </>
         )}
-      </div>
+      </S.LoginPageContainer>
     )
   }
 }
 
-export default LoginPage
+export default withRouter(LoginPage)

@@ -1,4 +1,5 @@
 import React from 'react'
+import firebase from '../utils/firebase'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
 import { ReactComponent as Logo } from '../assets/logo.svg'
@@ -52,6 +53,9 @@ function Header() {
         <Logo className="logo" onClick={() => history.push('/')} />
         <OutlinedButton children="New Sequence" onClick={() => history.push('/new-sequence')} />
         <OutlinedButton children="New Habit" onClick={() => history.push('/new')} />
+        <a href=" " onClick={() => firebase.auth().signOut()}>
+          Sign-out
+        </a>
       </div>
     </S.Header>
   )

@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from 'react'
 import { useSelector } from 'react-redux'
-import { Router, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { isLoaded } from 'react-redux-firebase'
+import { isLoaded, isEmpty } from 'react-redux-firebase'
 import { ThemeProvider } from 'emotion-theming'
 import { theme } from '../styles'
 
@@ -23,8 +23,29 @@ export const history = createBrowserHistory()
 
 function AuthIsLoaded({ children }: any) {
   const auth = useSelector((state: any) => state.firebaseReducer.auth)
-  if (!isLoaded(auth)) return <LoginPage />
+  if (!isLoaded(auth)) return <div>loading...</div>
   else return children
+}
+
+function PrivateRoute({ children, ...rest }: any) {
+  const auth = useSelector((state: any) => state.firebaseReducer.auth)
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isLoaded(auth) && !isEmpty(auth) ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  )
 }
 
 function Routes() {
@@ -32,20 +53,23 @@ function Routes() {
     <Router history={history}>
       <ThemeProvider theme={theme}>
         <ErrorPage>
-          <AuthIsLoaded>
-            <Suspense fallback={<Loading />}>
-              <Header />
+          <Suspense fallback={<Loading />}>
+            <AuthIsLoaded>
               <Switch>
-                <Route path="/contact" component={Contact} />
-                <Route path="/new" component={NewHabit} />
-                <Route path="/edit/:id" component={UpdateHabit} />
-                <Route path="/editSequence/:id" component={UpdateSequence} />
-                <Route path="/new-sequence" component={NewSequence} />
-                <Route path="/" component={Home} />
+                <Route path="/login" component={LoginPage} />
+                <PrivateRoute>
+                  <Header />
+                  <Route path="/contact" component={Contact} />
+                  <Route path="/new" component={NewHabit} />
+                  <Route path="/edit/:id" component={UpdateHabit} />
+                  <Route path="/editSequence/:id" component={UpdateSequence} />
+                  <Route path="/new-sequence" component={NewSequence} />
+                  <Route path="/" component={Home} />
+                  <Footer />
+                </PrivateRoute>
               </Switch>
-              <Footer />
-            </Suspense>
-          </AuthIsLoaded>
+            </AuthIsLoaded>
+          </Suspense>
         </ErrorPage>
       </ThemeProvider>
     </Router>

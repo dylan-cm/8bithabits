@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
-
-import HabitCard from '../molecules/HabitCard'
+import { withRouter } from 'react-router-dom'
+import exampleHabits from '../utils/constants/exampleHabits.json'
+import exampleSequences from '../utils/constants/exampleSequences.json'
 
 import {
   getHabits,
@@ -12,9 +13,8 @@ import {
   getSequences,
   bulkAddSequences,
 } from '../redux/actions/firebaseActions.js'
-import exampleHabits from '../utils/constants/exampleHabits.json'
-import exampleSequences from '../utils/constants/exampleSequences.json'
-import { withRouter } from 'react-router-dom'
+
+import HabitCard from '../molecules/HabitCard'
 import Sequence from '../molecules/Sequence'
 
 const S: Styles.Component = Styles

@@ -1,4 +1,6 @@
 export default {
+  // Auth
+  LOGIN: 'LOGIN',
   // Counter
   INCREMENT_COUNTER: 'INCREMENT_COUNTER',
   DECREMENT_COUNTER: 'DECREMENT_COUNTER',
