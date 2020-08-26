@@ -53,6 +53,9 @@ function Header() {
         <Logo className="logo" onClick={() => history.push('/')} />
         <OutlinedButton children="New Sequence" onClick={() => history.push('/new-sequence')} />
         <OutlinedButton children="New Habit" onClick={() => history.push('/new')} />
+        <a href=" " onClick={() => history.push('/user')}>
+          Account
+        </a>
         <a href=" " onClick={() => firebase.auth().signOut()}>
           Sign-out
         </a>

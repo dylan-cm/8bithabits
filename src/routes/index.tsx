@@ -18,12 +18,13 @@ const NewHabit = lazy(() => import('../pages/NewHabit'))
 const UpdateHabit = lazy(() => import('../pages/UpdateHabit'))
 const NewSequence = lazy(() => import('../pages/NewSequence'))
 const UpdateSequence = lazy(() => import('../pages/UpdateSequence'))
+const UserPage = lazy(() => import('../pages/UserPage'))
 
 export const history = createBrowserHistory()
 
 function AuthIsLoaded({ children }: any) {
   const auth = useSelector((state: any) => state.firebaseReducer.auth)
-  if (!isLoaded(auth)) return <div>loading...</div>
+  if (!isLoaded(auth)) return <Loading />
   else return children
 }
 
@@ -32,8 +33,8 @@ function PrivateRoute({ children, ...rest }: any) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        isLoaded(auth) && !isEmpty(auth) ? (
+      render={({ location }) => {
+        return isLoaded(auth) && !isEmpty(auth) ? (
           children
         ) : (
           <Redirect
@@ -43,7 +44,7 @@ function PrivateRoute({ children, ...rest }: any) {
             }}
           />
         )
-      }
+      }}
     />
   )
 }
@@ -59,12 +60,15 @@ function Routes() {
                 <Route path="/login" component={LoginPage} />
                 <PrivateRoute>
                   <Header />
-                  <Route path="/contact" component={Contact} />
-                  <Route path="/new" component={NewHabit} />
-                  <Route path="/edit/:id" component={UpdateHabit} />
-                  <Route path="/editSequence/:id" component={UpdateSequence} />
-                  <Route path="/new-sequence" component={NewSequence} />
-                  <Route path="/" component={Home} />
+                  <Switch>
+                    <Route path="/contact" component={Contact} />
+                    <Route path="/new" component={NewHabit} />
+                    <Route path="/edit/:id" component={UpdateHabit} />
+                    <Route path="/editSequence/:id" component={UpdateSequence} />
+                    <Route path="/new-sequence" component={NewSequence} />
+                    <Route path="/user" component={UserPage} />
+                    <Route path="/" component={Home} />
+                  </Switch>
                   <Footer />
                 </PrivateRoute>
               </Switch>

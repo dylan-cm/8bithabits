@@ -55,7 +55,6 @@ class LoginPage extends Component<PropTypes> {
   async redirect(msDelay: number) {
     await new Promise((resolve) => setTimeout(resolve, msDelay))
     this.props.history.push('/')
-    console.log('redirected')
   }
 
   render() {

@@ -22,6 +22,7 @@ const initialState = {
     coolDownAmt: 0,
     coolDownUnit: 'day',
   },
+  userStats: {},
 }
 
 interface Action {
@@ -122,6 +123,15 @@ export default function firebase(state = initialState, action: Action) {
       return { ...state, newSequence: { ...sequence, habits: _loadedHabits } } // return sequnce with loaded habits instead of habit ids
     case ActionTypes.RESET_SEQUENCE_EDITOR:
       return { ...state, newSequence: initialState.newSequence }
+    case ActionTypes.GET_USER_STATS:
+      return { ...state, userStats: action.payload }
+    case ActionTypes.GET_USER_STATS_ERR:
+      console.log(action.err)
+      return state
+    case ActionTypes.DELETE_USER:
+      return { ...state, userStats: {} }
+    case ActionTypes.DELETE_USER_ERR:
+      return state
     default:
       return state
   }

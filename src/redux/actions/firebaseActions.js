@@ -283,3 +283,48 @@ export function onNewSequenceChange(title, coolDownAmt, coolDownUnit, habitList)
     })
   }
 }
+
+export function getUserStats(currentUser) {
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore()
+    db.collection('users') // users collection
+      .doc(currentUser.uid) // select user document based on id
+      .get() // get data
+      .then((userData) => {
+        dispatch({
+          type: ActionTypes.GET_USER_STATS,
+          payload: {
+            sequences: userData.data().sequences ? userData.data().sequences.length : 0,
+            habits: userData.data().habits ? userData.data().habits.length : 0,
+            email: currentUser.email,
+            emailVerified: currentUser.emailVerified,
+            lastSignInTime: currentUser.metadata.lastSignInTime,
+            creationTime: currentUser.metadata.creationTime,
+            photoURL: currentUser.photoURL,
+            displayName: currentUser.displayName,
+          },
+        })
+      }) // then dispatch action with desired stats
+      .catch((err) => {
+        dispatch({ type: ActionTypes.GET_USER_STATS_ERR, err })
+      }) // or catch error
+  }
+}
+
+export function deleteUser() {
+  return (dispatch, getState, getFirebase) => {
+    const db = getFirebase().firestore()
+    db.collection('users') // users collection
+      .doc() // select user document based on id
+      .set({
+        deleted: Date(),
+      }) // set deleted property on user
+      .then((userData) => {
+        dispatch({ type: ActionTypes.DELETE_USER })
+      }) // then dispatch action
+      .catch((err) => {
+        dispatch({ type: ActionTypes.DELETE_USERS_ERR, err })
+      }) // or catch error
+    // Logout
+  }
+}
