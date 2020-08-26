@@ -4,7 +4,7 @@ import styled from '../styles/styled'
 import * as Styles from '../styles'
 import firebase from '../utils/firebase'
 
-import { getUserStats, deleteUser } from '../redux/actions/firebaseActions'
+import { getUserStats, deleteUser } from '../redux/actions/firebaseActions.js'
 import OutlinedButton from '../atoms/OutlinedButton'
 
 const S: Styles.Component = Styles
@@ -39,7 +39,7 @@ class UserPage extends Component<PropTypes> {
     this.props.getUserStats(firebase.auth().currentUser)
   }
   render() {
-    const { user } = this.props
+    const { user, deleteUser } = this.props
     return (
       <S.UserPageContainer>
         {user ? (
@@ -64,7 +64,7 @@ class UserPage extends Component<PropTypes> {
             </p>
             <h3>{`You have ${user.habits} habits.`}</h3>
             <h3>{`You have ${user.sequences} sequences.`}</h3>
-            <OutlinedButton color="#ff0000" onClick={deleteUser}>
+            <OutlinedButton color="#ff0000" onClick={() => deleteUser()}>
               Delete
             </OutlinedButton>
             <p>VERY DANGEROUS. NO CONFIRMATION.</p>

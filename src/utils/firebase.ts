@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
-// import 'firebase/functions' // <- needed if using httpsCallable
+import 'firebase/functions' // <- needed if using httpsCallable
 // import 'firebase/database'
 
 const config = {
@@ -24,6 +24,6 @@ export const rrfConfig = {
 firebase.initializeApp(config)
 // Initialize other services on firebase instance
 firebase.firestore() // <- needed if using firestore
-// firebase.functions() // <- needed if using httpsCallable
+firebase.functions() // <- needed if using httpsCallable
 
 export default firebase

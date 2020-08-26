@@ -1,4 +1,5 @@
 import ActionTypes from '../../utils/constants/actionTypes'
+import firebase from '../../utils/firebase.ts'
 
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
@@ -313,18 +314,31 @@ export function getUserStats(currentUser) {
 
 export function deleteUser() {
   return (dispatch, getState, getFirebase) => {
+    const uid = firebase.auth().currentUser.uid
+    console.log(uid)
     const db = getFirebase().firestore()
+    // Set deleted property on user document
     db.collection('users') // users collection
-      .doc() // select user document based on id
+      .doc(uid) // select user document based on id
       .set({
         deleted: Date(),
       }) // set deleted property on user
       .then((userData) => {
+        // Delete user function
+        var deleteUser = firebase.functions().httpsCallable('deleteUser')
+        deleteUser(uid)
+          .then(() => {
+            // Logout
+            firebase.auth().signOut()
+          })
+          .catch((err) => {
+            dispatch({ type: ActionTypes.DELETE_USERS_ERR, err })
+            console.log(err)
+          })
         dispatch({ type: ActionTypes.DELETE_USER })
       }) // then dispatch action
       .catch((err) => {
         dispatch({ type: ActionTypes.DELETE_USERS_ERR, err })
       }) // or catch error
-    // Logout
   }
 }
