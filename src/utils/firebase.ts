@@ -5,14 +5,14 @@ import 'firebase/auth'
 // import 'firebase/database'
 
 const config = {
-  apiKey: 'AIzaSyD3xp0DwQWt47l1qoPEnNuYSA9s_g1bTBs',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'habit-8bit.firebaseapp.com',
   databaseURL: 'https://habit-8bit.firebaseio.com',
   projectId: 'habit-8bit',
   storageBucket: 'habit-8bit.appspot.com',
-  messagingSenderId: '837835217815',
-  appId: '1:837835217815:web:3ada183fecae9dc22802d2',
-  measurementId: 'G-D4HD789HLP',
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 }
 
 export const rrfConfig = {
