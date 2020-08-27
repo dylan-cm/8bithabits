@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
-import firebase from '../utils/firebase'
 
-import { getUserStats, deleteUser } from '../redux/actions/firebaseActions.js'
+import { getUserData, deleteUser } from '../redux/actions/firebaseActions.js'
 import OutlinedButton from '../atoms/OutlinedButton'
 
 const S: Styles.Component = Styles
@@ -30,13 +29,13 @@ S.UserPageContainer = styled.div`
 
 interface PropTypes {
   user: { [key: string]: any }
-  getUserStats: (currentUser: firebase.User | null) => void
+  getUserData: () => void
   deleteUser: () => void
 }
 
 class UserPage extends Component<PropTypes> {
   componentDidMount() {
-    this.props.getUserStats(firebase.auth().currentUser)
+    if (!(this.props.user && this.props.user.email)) this.props.getUserData()
   }
   render() {
     const { user, deleteUser } = this.props
@@ -62,8 +61,8 @@ class UserPage extends Component<PropTypes> {
               <span>User Since: </span>
               {user.creationTime}
             </p>
-            <h3>{`You have ${user.habits} habits.`}</h3>
-            <h3>{`You have ${user.sequences} sequences.`}</h3>
+            <h3>{`You have ${user.habits ? user.habits.length : 0} habits.`}</h3>
+            <h3>{`You have ${user.sequences ? user.sequences.length : 0} sequences.`}</h3>
             <OutlinedButton color="#ff0000" onClick={() => deleteUser()}>
               Delete
             </OutlinedButton>
@@ -83,12 +82,12 @@ interface StateType {
 
 const mapStateToProps = (state: StateType) => {
   return {
-    user: state.firebase.userStats,
+    user: state.firebase.userData,
   }
 }
 
 const mapDispatchToProps = {
-  getUserStats,
+  getUserData,
   deleteUser,
 }
 

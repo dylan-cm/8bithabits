@@ -4,13 +4,7 @@ import styled from '../styles/styled'
 import * as Styles from '../styles'
 import { withRouter } from 'react-router-dom'
 
-import {
-  getHabits,
-  bulkAddHabits,
-  deleteHabit,
-  getSequences,
-  bulkAddSequences,
-} from '../redux/actions/firebaseActions.js'
+import { deleteHabit, getUserData } from '../redux/actions/firebaseActions.js'
 
 import HabitCard from '../molecules/HabitCard'
 import Sequence from '../molecules/Sequence'
@@ -33,15 +27,14 @@ S.HomeContainer = styled.div`
 `
 
 interface PropTypes {
+  // User
+  getUserData: () => void
+  userName: any
   // Habits
   habits: any[]
-  getHabits: () => void
-  bulkAddHabits: (habits: any[]) => void
   deleteHabit: (habitId: string) => void
   // Sequences
   sequences: any[]
-  getSequences: () => void
-  bulkAddSequences: (sequences: any[]) => void
   // React Router
   history: any
   match: any
@@ -50,11 +43,11 @@ interface PropTypes {
 
 class Home extends Component<PropTypes> {
   componentDidMount() {
-    this.props.getHabits()
-    this.props.getSequences()
+    this.props.getUserData()
   }
   render() {
     const { habits, sequences } = this.props
+    // console.log(`${habits.length} habits:`, habits, `${sequences.length} sequnces:`, sequences)
     return (
       <S.HomeContainer>
         {sequences.length < 1 && habits.length < 1 ? (
@@ -104,17 +97,15 @@ interface StateType {
 
 const mapStateToProps = (state: StateType) => {
   return {
+    userName: state.firebase.user,
     habits: state.firebase.habits,
     sequences: state.firebase.sequences,
   }
 }
 
 const mapDispatchToProps = {
-  getHabits,
-  bulkAddHabits,
+  getUserData,
   deleteHabit,
-  getSequences,
-  bulkAddSequences,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home))
