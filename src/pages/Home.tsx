@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import styled from '../styles/styled'
 import * as Styles from '../styles'
 import { withRouter } from 'react-router-dom'
-import exampleHabits from '../utils/constants/exampleHabits.json'
-import exampleSequences from '../utils/constants/exampleSequences.json'
 
 import {
   getHabits,
@@ -54,8 +52,6 @@ class Home extends Component<PropTypes> {
   componentDidMount() {
     this.props.getHabits()
     this.props.getSequences()
-    if (false) this.props.bulkAddHabits(exampleHabits) //! For testing purposes only, false means innactive
-    if (false) this.props.bulkAddSequences(exampleSequences) //! For testing purposes only, false means innactive
   }
   render() {
     const { habits, sequences } = this.props

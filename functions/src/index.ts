@@ -64,3 +64,20 @@ async function sendWelcomeEmail(email: string, displayName: string) {
   functions.logger.log('New welcome email sent to:', email)
   return null
 }
+
+// Custom Claims
+exports.addAdminRole = functions.https.onCall((data, context) => {
+  // get user and add custom claim (admin)
+  return admin
+    .auth()
+    .getUserByEmail(data.email)
+    .then((user) => {
+      return admin.auth().setCustomUserClaims(user.uid, {
+        admin: true,
+      })
+    })
+    .then(() => {
+      return { message: `Success! ${data.email} has been made an admin` }
+    })
+    .catch((err) => err)
+})

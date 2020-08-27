@@ -34,10 +34,13 @@ service cloud.firestore {
         resource.data.rp != null &&
         resource.data.rp >= 0;
     }
+    // Admin check function
+    function userIsAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
   	// Allow super users to do everything
     match /{everythingInDatabase=**} {
-      //TODO: REMOVE UID AND MAKE SUPER ADMIN THRU SERVER CALL
-      allow read: if request.auth.uid == "KygohRroz4NeS7xr1AqA0cHwRnr1"
+      allow read, write: if userIsAdmin()
     }
     // Make sure the uid of the requesting user matches name of the user
     // document. The wildcard expression {userId} makes the userId variable
