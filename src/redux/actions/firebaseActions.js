@@ -291,9 +291,9 @@ export function deleteSequence(sequenceId) {
           sequences: getState().firebase.userData.sequences.filter((sequence) => sequence !== sequenceId),
         },
       )
-      .then((_) => {
-        dispatch(getUserData())
+      .then(() => {
         dispatch({ type: ActionTypes.DELETE_SEQUENCE })
+        dispatch(getUserData())
       }) // then dispatch the action and reload the sequences
       .catch((err) => dispatch({ type: ActionTypes.DELETE_SEQUENCE_ERR, payload: err })) // or catch the error
   }

@@ -2,38 +2,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     // Global functions that validate resource data
-    function resourceCoolDownIsValid() {
-      return resource.data.coolDownUnit in ["day", "week", "month", "year"] &&
-        resource.data.coolDownAmt >= 0;
-    }
-    function resourceStreakIsValid() {
-      return resource.data.streakUnit in ["day", "week", "month", "year"] &&
-        resource.data.streakAmt >= 0;
-    }
-    function resourceColorIsValid() {
-      return resource.data.color != null &&
-        resource.data.color.r >= 0 &&
-        resource.data.color.r < 256 && 
-        resource.data.color.g >= 0 &&
-        resource.data.color.g < 256 && 
-        resource.data.color.b >= 0 &&
-        resource.data.color.b < 256;
-    }
-    function resourceTitleIsValid() {
-      return resource.data.tile != null &&
-        resource.data.tile.size > 0 &&
-        resource.data.tile.size < 20;
-    }
-    function resourceIconIsValid() {
-      return resource.data.tile != null &&
-        resource.data.tile.size == 1;
-    }
-    function resourcePointsIsValid() {
-      return resource.data.xp != null &&
-        resource.data.xp >= 0 &&
-        resource.data.rp != null &&
-        resource.data.rp >= 0;
-    }
     // Admin check function
     function userIsAdmin() {
       return request.auth != null && request.auth.token.admin == true;
@@ -57,37 +25,9 @@ service cloud.firestore {
   		function userIsHabitEditor() {
         return get(/databases/$(database)/documents/habits/$(habitID)/private_data/private).data.roles[request.auth.uid] == "editor";
       }
-      // Validate resource data
-      function resourceCueIsValid() {
-      	return resource.data.cue != null &&
-        	resource.data.cue.size > 0 &&
-          resource.data.cue.size < 100;
-      }
-      function resourceRoutineIsValid() {
-      	return resource.data.routine != null &&
-        	resource.data.routine.size > 0 &&
-          resource.data.routine.size < 100;
-      }
-      function resourceRewardIsValid() {
-      	return resource.data.reward != null &&
-        	resource.data.reward.size > 0 &&
-          resource.data.reward.size < 100;
-      }
-      // Combine all validators for habits
-      function resourceHabitIsValidHabit(){
-      	return resourceCoolDownIsValid() &&
-        	resourceStreakIsValid() &&
-          resourceColorIsValid() &&
-          resourceIconIsValid() &&
-          resourceCueIsValid() &&
-          resourceRoutineIsValid() &&
-          resourceRewardIsValid() &&
-          resourcePointsIsValid() &&
-          resourceTitleIsValid();
-      }
       allow read: if request.auth != null;
-      allow create: if request.auth != null && resourceHabitIsValidHabit();
-      allow update: if request.auth != null && resourceHabitIsValidHabit() && (userIsHabitOwner() || userIsHabitEditor());
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && (userIsHabitOwner() || userIsHabitEditor());
       allow delete: if request.auth != null && userIsHabitOwner();
     }
     match /sequences/{sequenceID} {
@@ -98,15 +38,9 @@ service cloud.firestore {
       function userIsSequenceEditor() {
         return get(/databases/$(database)/documents/sequence/$(sequenceID)/private_data/private).data.roles[request.auth.uid] == "editor";
       }
-      // Combine all validators for sequences
-      function resourceSequenceIsValidHabit(){
-      	return resourceCoolDownIsValid() &&
-        	resourceStreakIsValid() &&
-          resourceTitleIsValid();
-      }
       allow read: if request.auth != null;
-      allow create: if request.auth != null && resourceSequenceIsValidHabit();
-      allow update: if request.auth != null && resourceSequenceIsValidHabit() && (userIsSequenceOwner() || userIsSequenceEditor());
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && (userIsSequenceOwner() || userIsSequenceEditor());
       allow delete: if request.auth != null && userIsSequenceOwner();
     }
   }

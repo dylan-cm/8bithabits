@@ -38,7 +38,11 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate((user) => {
     .firestore()
     .collection('users')
     .doc(user.uid)
-    .set({})
+    .set({
+      // TODO: starter habit & sequence
+      sequences: [],
+      habits: [],
+    })
     .then(() => functions.logger.log(`Successfully created user doc for [${user.uid}]`))
     .catch((err) => functions.logger.log(`Error creating new user [${user.uid}] doc: ${err}`))
   //TODO: Send welcome email

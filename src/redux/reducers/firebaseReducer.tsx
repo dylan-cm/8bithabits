@@ -38,12 +38,12 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.ADD_HABIT:
       return { ...state, newHabit: initialState.newHabit }
     case ActionTypes.ADD_HABIT_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.ADD_HABIT_ERR, action.err)
       return state
     case ActionTypes.GET_HABITS:
       return { ...state, habits: action.payload }
     case ActionTypes.GET_HABITS_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.GET_HABITS_ERR, action.err)
       return state
     case ActionTypes.ON_NEW_HABIT_CHANGE:
       return {
@@ -64,12 +64,12 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.DELETE_HABIT:
       return { ...state, newHabit: initialState.newHabit }
     case ActionTypes.DELETE_HABIT_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.DELETE_HABIT_ERR, action.err)
       return state
     case ActionTypes.UPDATE_HABIT:
       return { ...state, newHabit: initialState.newHabit }
     case ActionTypes.UPDATE_HABIT_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.UPDATE_HABIT_ERR, action.err)
       return state
     case ActionTypes.LOAD_HABIT_EDITOR:
       return {
@@ -82,27 +82,27 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.GET_SEQUENCES:
       return { ...state, sequences: action.payload }
     case ActionTypes.GET_SEQUENCES_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.GET_SEQUENCES_ERR, action.err)
       return state
     case ActionTypes.UPDATE_SEQUENCE:
       return { ...state, newSequence: initialState.newSequence }
     case ActionTypes.UPDATE_SEQUENCE_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.UPDATE_SEQUENCE_ERR, action.err)
       return state
     case ActionTypes.DELETE_SEQUENCE:
       return { ...state, newSequence: initialState.newSequence }
     case ActionTypes.DELETE_SEQUENCE_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.DELETE_SEQUENCE_ERR, action.err)
       return state
     case ActionTypes.ADD_SEQUENCE:
       return { ...state, newSequence: initialState.newSequence }
     case ActionTypes.ADD_SEQUENCE_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.ADD_SEQUENCE_ERR, action.err)
       return state
     case ActionTypes.BULK_ADD_SEQUENCES:
       return state
     case ActionTypes.BULK_ADD_SEQUENCES_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.BULK_ADD_SEQUENCES_ERR, action.err)
       return state
     case ActionTypes.ON_NEW_SEQUENCE_CHANGE:
       return {
@@ -124,7 +124,7 @@ export default function firebase(state = initialState, action: Action) {
     case ActionTypes.GET_USER_STATS:
       return { ...state, userData: action.payload }
     case ActionTypes.GET_USER_STATS_ERR:
-      console.log(action.err)
+      console.log(ActionTypes.GET_USER_STATS_ERR, action.err)
       return state
     case ActionTypes.DELETE_USER:
       return { ...state, userData: {} }
