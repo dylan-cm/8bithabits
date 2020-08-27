@@ -99,6 +99,7 @@ class NewHabit extends Component<PropTypes> {
         <OutlinedButton
           onClick={(_) => {
             this.props.addHabit()
+            this.props.resetHabitEditor()
             this.props.history.push('/')
           }}
         >

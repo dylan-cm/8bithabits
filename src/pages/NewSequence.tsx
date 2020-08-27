@@ -51,6 +51,7 @@ class NewSequence extends Component<PropTypes> {
         <OutlinedButton
           onClick={(_) => {
             this.props.addSequence()
+            this.props.resetSequenceEditor()
             this.props.history.push('/')
           }}
         >
